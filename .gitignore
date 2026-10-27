@@ -1,0 +1,67 @@
+# =============================================================================
+# Python & Virtual Environments
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+.venv/
+venv/
+env/
+ENV/
+backend/venv/
+ml/venv/
+
+# =============================================================================
+# Node & Frontend
+# =============================================================================
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+frontend/dist-ssr/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# =============================================================================
+# Large Datasets & Raw Captures (CIC-IDS2017)
+# =============================================================================
+ml/data/raw/
+*.csv
+*.pcap
+*.pcapng
+
+# =============================================================================
+# Heavy / Non-Production Model Artifacts
+# =============================================================================
+# Keep final production XGBoost pipeline (5.9 MB) and schema tracked.
+# Ignore bulky experimental model dumps (>50 MB).
+ml/models/*random_forest.joblib
+
+# =============================================================================
+# Environment & IDE Files
+# =============================================================================
+.env
+.env.*
+!.env.example
+*.local
+
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
