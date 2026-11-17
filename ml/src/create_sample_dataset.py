@@ -1,6 +1,8 @@
 from pathlib import Path
 import json
 import pandas as pd
+import joblib
+import numpy as np
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -56,6 +58,7 @@ def create_sample_dataset():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     df = load_csv_files()
+    preprocessor = joblib.load(PROJECT_ROOT / "ml/models/netguard_final_preprocessor.joblib")
 
     print(f"Loaded {len(df):,} total rows.")
 
@@ -63,11 +66,7 @@ def create_sample_dataset():
 
     df = df.dropna(subset=["ProductionClass"])
 
-    feature_columns = [
-        column
-        for column in df.columns
-        if column not in ["Label", "ProductionClass"]
-    ]
+    feature_columns = list(preprocessor.feature_names_in_)
 
     print(f"Feature count: {len(feature_columns)}")
 
@@ -85,22 +84,10 @@ def create_sample_dataset():
             random_state=42,
         )
 
-        records = []
-
-        for _, row in sample.iterrows():
-
-            features = {}
-
-            for feature in feature_columns:
-
-                value = row[feature]
-
-                if pd.isna(value):
-                    value = 0.0
-
-                features[feature] = float(value)
-
-            records.append(features)
+        # Use the fitted training medians for missing/non-finite demo values.
+        numeric_sample = sample[feature_columns].replace([np.inf, -np.inf], np.nan)
+        processed = preprocessor.transform(numeric_sample)
+        records = pd.DataFrame(processed, columns=feature_columns).to_dict(orient="records")
 
         samples[production_class] = records
 
@@ -119,6 +106,7 @@ def create_sample_dataset():
             samples,
             file,
             indent=2,
+            allow_nan=False,
         )
 
     print()

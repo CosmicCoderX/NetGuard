@@ -1,103 +1,14 @@
-import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-} from "recharts"
+import { useMetadata } from '../../lib/api'
+import { DataState } from '../ui'
+import WhyCard from '../WhyCard'
 
-const trafficData = [
-    { category: "Normal", count: 2096484 },
-    { category: "DoS / DDoS", count: 321764 },
-    { category: "Port Scanning", count: 90819 },
-    { category: "Brute Force", count: 9152 },
-    { category: "Web Attack", count: 2143 },
-    { category: "Botnet", count: 1953 },
-]
-
-function formatNumber(value: number) {
-    return new Intl.NumberFormat("en-US").format(value)
-}
-
+const colors = ['#6da8ff', '#50dbc6', '#ac9bf5', '#e9c37a', '#ec9eaa', '#819fc1']
+const number = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 })
 export default function TrafficDistribution() {
-    return (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 shadow-sm">
-            <div className="mb-5">
-                <h2 className="text-lg font-semibold text-slate-100">
-                    Traffic Distribution
-                </h2>
-
-                <p className="mt-1 text-sm text-slate-400">
-                    Distribution of network flows across production traffic categories.
-                </p>
-            </div>
-
-            <div className="h-[340px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                        data={trafficData}
-                        layout="vertical"
-                        margin={{
-                            top: 5,
-                            right: 25,
-                            left: 20,
-                            bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid
-                            strokeDasharray="3 3"
-                            horizontal={false}
-                            stroke="#334155"
-                        />
-
-                        <XAxis
-                            type="number"
-                            tick={{ fill: "#94a3b8", fontSize: 12 }}
-                            axisLine={false}
-                            tickLine={false}
-                            tickFormatter={(value) =>
-                                new Intl.NumberFormat("en-US", {
-                                    notation: "compact",
-                                    maximumFractionDigits: 1,
-                                }).format(value)
-                            }
-                        />
-
-                        <YAxis
-                            type="category"
-                            dataKey="category"
-                            width={105}
-                            tick={{ fill: "#cbd5e1", fontSize: 12 }}
-                            axisLine={false}
-                            tickLine={false}
-                        />
-
-                        <Tooltip
-                            cursor={{ fill: "rgba(148, 163, 184, 0.08)" }}
-                            contentStyle={{
-                                backgroundColor: "#0f172a",
-                                border: "1px solid #334155",
-                                borderRadius: "12px",
-                                color: "#e2e8f0",
-                            }}
-                            formatter={(value) => [
-                                formatNumber(Number(value)),
-                                "Flows",
-                            ]}
-                        />
-
-                        <Bar
-                            dataKey="count"
-                            name="Traffic"
-                            fill="#38bdf8"
-                            radius={[0, 6, 6, 0]}
-                            barSize={28}
-                        />
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
-        </div>
-    )
+    const { data, error } = useMetadata()
+    const counts = data?.evaluation?.class_counts
+    if (!data) return <DataState error={error} />
+    if (!counts) return <p className="chart-note">Dataset counts are unavailable.</p>
+    const total = Object.values(counts).reduce((sum, count) => sum + count, 0)
+    return <div><div className="distribution-rows">{Object.entries(counts).map(([label, count], index) => <div key={label} title={`${label}: ${count.toLocaleString()} flows (${(count / total * 100).toFixed(2)}%)`}><div className="distribution-label"><span>{label}</span><strong>{number.format(count)} <span style={{ color: '#5d7291', marginLeft: 6 }}>{(count / total * 100).toFixed(1)}%</span></strong></div><div className="bar-track"><div className="bar-fill" style={{ width: `${count / total * 100}%`, background: colors[index % colors.length] }} /></div></div>)}</div><WhyCard title="Why class balance matters">Normal traffic dominates this dataset. Rare attacks can be harder to detect, even when overall accuracy is high. These are recorded dataset counts, not live traffic.</WhyCard></div>
 }

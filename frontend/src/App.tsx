@@ -1,75 +1,40 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import Sidebar from './components/layout/Sidebar'
+import TopBar from './components/layout/TopBar'
+import { DataState } from './components/ui'
 
-import Sidebar from "./components/layout/Sidebar"
-import TopBar from "./components/layout/TopBar"
+const Overview = lazy(() => import('./pages/Overview'))
+const AnalyzeTraffic = lazy(() => import('./pages/AnalyzeTraffic'))
+const ModelLab = lazy(() => import('./pages/ModelLab'))
+const Dataset = lazy(() => import('./pages/Dataset'))
+const History = lazy(() => import('./pages/History'))
+const Settings = lazy(() => import('./pages/Settings'))
 
-import Overview from "./pages/Overview"
-import AnalyzeTraffic from "./pages/AnalyzeTraffic"
-import ModelLab from "./pages/ModelLab"
-import Dataset from "./pages/Dataset"
-import History from "./pages/History"
-import Settings from "./pages/Settings"
-
-
-function App() {
-  return (
-    <BrowserRouter>
-      <div className="flex min-h-screen bg-slate-950 text-slate-200">
-
-        {/* Sidebar */}
-        <Sidebar />
-
-        {/* Main application */}
-        <div className="flex min-w-0 flex-1 flex-col">
-
-          <TopBar />
-
-          <main className="flex-1 overflow-auto p-6 lg:p-8">
-            <Routes>
-
-              <Route
-                path="/"
-                element={<Navigate to="/overview" replace />}
-              />
-
-              <Route
-                path="/overview"
-                element={<Overview />}
-              />
-
-              <Route
-                path="/analyze"
-                element={<AnalyzeTraffic />}
-              />
-
-              <Route
-                path="/model-lab"
-                element={<ModelLab />}
-              />
-
-              <Route
-                path="/dataset"
-                element={<Dataset />}
-              />
-
-              <Route
-                path="/history"
-                element={<History />}
-              />
-
-              <Route
-                path="/settings"
-                element={<Settings />}
-              />
-
-            </Routes>
-          </main>
-
+function Workspace() {
+    const [open, setOpen] = useState(false)
+    const menuRef = useRef<HTMLButtonElement>(null)
+    const { pathname } = useLocation()
+    const close = useCallback(() => { setOpen(false); requestAnimationFrame(() => menuRef.current?.focus()) }, [])
+    useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }) }, [pathname])
+    return <div className="app-shell">
+        <a href="#main-content" className="skip-link">Skip to content</a>
+        <Sidebar open={open} onClose={close} />
+        <div className="app-content" inert={open || undefined}>
+            <TopBar open={open} onMenu={() => setOpen(true)} menuRef={menuRef} />
+            <main id="main-content" className="main-content" tabIndex={-1}>
+                <Suspense fallback={<DataState />}><Routes>
+                    <Route path="/" element={<Navigate to="/overview" replace />} />
+                    <Route path="/overview" element={<Overview />} />
+                    <Route path="/analyze" element={<AnalyzeTraffic />} />
+                    <Route path="/model-lab" element={<ModelLab />} />
+                    <Route path="/dataset" element={<Dataset />} />
+                    <Route path="/history" element={<History />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="*" element={<div className="empty-state"><h1>Page not found</h1><Link className="btn btn-primary" to="/overview">Back to overview</Link></div>} />
+                </Routes></Suspense>
+            </main>
         </div>
-
-      </div>
-    </BrowserRouter>
-  )
+    </div>
 }
-
-export default App
+export default function App() { return <BrowserRouter><Workspace /></BrowserRouter> }

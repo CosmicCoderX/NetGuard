@@ -17,6 +17,11 @@ MODEL_DIR = (
     / "models"
 )
 
+# A completed, explicitly activated bundle keeps the original model available for rollback.
+VALIDATED_DIR = MODEL_DIR / "validated"
+if (VALIDATED_DIR / "active.json").exists():
+    MODEL_DIR = VALIDATED_DIR
+
 
 MODEL_PATH = (
     MODEL_DIR

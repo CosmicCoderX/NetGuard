@@ -1,0 +1,138 @@
+{
+  "evaluated_at": "2026-11-17T18:25:06.865278+00:00",
+  "split": "Stratified random 80/20 split, random_state=42; reconstructed from local CSV order.",
+  "limitations": [
+    "The original training row manifest was not saved; holdout independence cannot be proven.",
+    "This split was used during model development; it is not an untouched external test.",
+    "Infiltration and Heartbleed are excluded from the six-class model.",
+    "High model probability does not guarantee correctness on new networks."
+  ],
+  "dataset_rows": 2522315,
+  "test_rows": 504463,
+  "class_counts": {
+    "Normal": 2096484,
+    "DoS / DDoS": 321764,
+    "Port Scanning": 90819,
+    "Brute Force": 9152,
+    "Web Attack": 2143,
+    "Botnet": 1953
+  },
+  "accuracy": 0.9990663339035767,
+  "macro_f1": 0.9661038642386757,
+  "weighted_f1": 0.9990862066863206,
+  "classes": [
+    "Botnet",
+    "Brute Force",
+    "DoS / DDoS",
+    "Normal",
+    "Port Scanning",
+    "Web Attack"
+  ],
+  "classification_report": {
+    "Botnet": {
+      "precision": 0.7313131313131314,
+      "recall": 0.9282051282051282,
+      "f1-score": 0.8180790960451978,
+      "support": 390.0
+    },
+    "Brute Force": {
+      "precision": 1.0,
+      "recall": 0.9994535519125683,
+      "f1-score": 0.9997267012845039,
+      "support": 1830.0
+    },
+    "DoS / DDoS": {
+      "precision": 0.9988820570150923,
+      "recall": 0.9996736748869517,
+      "f1-score": 0.9992777091730936,
+      "support": 64353.0
+    },
+    "Normal": {
+      "precision": 0.9998663318598012,
+      "recall": 0.9990340975489927,
+      "f1-score": 0.9994500414556603,
+      "support": 419297.0
+    },
+    "Port Scanning": {
+      "precision": 0.9887811785208583,
+      "recall": 0.9995595683770094,
+      "f1-score": 0.994141159721842,
+      "support": 18164.0
+    },
+    "Web Attack": {
+      "precision": 0.9905882352941177,
+      "recall": 0.9813519813519813,
+      "f1-score": 0.9859484777517564,
+      "support": 429.0
+    },
+    "accuracy": 0.9990663339035767,
+    "macro avg": {
+      "precision": 0.9515718223338334,
+      "recall": 0.984546333713772,
+      "f1-score": 0.9661038642386757,
+      "support": 504463.0
+    },
+    "weighted avg": {
+      "precision": 0.999126608226406,
+      "recall": 0.9990663339035767,
+      "f1-score": 0.9990862066863206,
+      "support": 504463.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      362,
+      0,
+      0,
+      28,
+      0,
+      0
+    ],
+    [
+      0,
+      1829,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      64332,
+      18,
+      3,
+      0
+    ],
+    [
+      133,
+      0,
+      67,
+      418892,
+      203,
+      2
+    ],
+    [
+      0,
+      0,
+      4,
+      2,
+      18156,
+      2
+    ],
+    [
+      0,
+      0,
+      1,
+      7,
+      0,
+      421
+    ]
+  ],
+  "artifact_sha256": {
+    "netguard_final_xgboost.joblib": "d7aa52a0cf134964dc9ebca7bf73fe333e2afd5d788cad509670866e2cfa26e3",
+    "netguard_final_preprocessor.joblib": "746fc5a0d06ca5eefbb560278b0ae778b76ac08be37cb87733df69045ba41dd1",
+    "netguard_final_label_encoder.joblib": "7cbcce338bed7fd90ddbd5e54008e3ff8f3302b522fb661a5256fd50c7b2b977",
+    "netguard_schema.json": "b904ab7c0d1f0c811777c9a2413bb78c2dab64d71f78aaf2db6dea2c2ec057ea"
+  }
+}

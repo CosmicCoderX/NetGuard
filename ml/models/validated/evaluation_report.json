@@ -1,0 +1,256 @@
+{
+  "evaluated_at": "2026-11-17T19:27:28.975210+00:00",
+  "model_name": "XGBoost refined",
+  "split": "Feature-unique stratified 60/20/20 train/validation/test; seeds 2026 and 2027.",
+  "selection_rule": "Highest validation mean of macro F1 and macro precision. Test scores are not used for selection.",
+  "limitations": [
+    "Internal random split of CIC-IDS2017; external networks and future attacks remain unvalidated.",
+    "Infiltration and Heartbleed are excluded. Probabilities are not calibrated.",
+    "Duplicate feature vectors and conflicting labels are excluded before splitting; historical benchmark scores are not directly comparable."
+  ],
+  "dataset_rows": 2520919,
+  "train_rows": 1512551,
+  "validation_rows": 504184,
+  "test_rows": 504184,
+  "additional_excluded_rows": 1396,
+  "class_counts": {
+    "Normal": 2095786,
+    "DoS / DDoS": 321630,
+    "Port Scanning": 90255,
+    "Brute Force": 9152,
+    "Web Attack": 2143,
+    "Botnet": 1953
+  },
+  "accuracy": 0.999385145105755,
+  "macro_precision": 0.9622822147498765,
+  "macro_f1": 0.9720839178141348,
+  "weighted_f1": 0.9993951075487657,
+  "classes": [
+    "Botnet",
+    "Brute Force",
+    "DoS / DDoS",
+    "Normal",
+    "Port Scanning",
+    "Web Attack"
+  ],
+  "classification_report": {
+    "Botnet": {
+      "precision": 0.7872807017543859,
+      "recall": 0.9181585677749361,
+      "f1-score": 0.8476977567886659,
+      "support": 391.0
+    },
+    "Brute Force": {
+      "precision": 0.9994532531437944,
+      "recall": 0.9989071038251366,
+      "f1-score": 0.9991801038535119,
+      "support": 1830.0
+    },
+    "DoS / DDoS": {
+      "precision": 0.9990522063393412,
+      "recall": 0.9995802630351647,
+      "f1-score": 0.9993161649285859,
+      "support": 64326.0
+    },
+    "Normal": {
+      "precision": 0.9998591838390781,
+      "recall": 0.9994512795921338,
+      "f1-score": 0.9996551901047912,
+      "support": 419157.0
+    },
+    "Port Scanning": {
+      "precision": 0.9950901969437855,
+      "recall": 0.9992798182926154,
+      "f1-score": 0.9971806069987285,
+      "support": 18051.0
+    },
+    "Web Attack": {
+      "precision": 0.9929577464788732,
+      "recall": 0.986013986013986,
+      "f1-score": 0.9894736842105263,
+      "support": 429.0
+    },
+    "accuracy": 0.999385145105755,
+    "macro avg": {
+      "precision": 0.9622822147498765,
+      "recall": 0.9835651697556621,
+      "f1-score": 0.9720839178141348,
+      "support": 504184.0
+    },
+    "weighted avg": {
+      "precision": 0.9994132823955773,
+      "recall": 0.999385145105755,
+      "f1-score": 0.9993951075487657,
+      "support": 504184.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      359,
+      0,
+      0,
+      32,
+      0,
+      0
+    ],
+    [
+      0,
+      1828,
+      0,
+      1,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      64299,
+      21,
+      6,
+      0
+    ],
+    [
+      97,
+      1,
+      47,
+      418927,
+      83,
+      2
+    ],
+    [
+      0,
+      0,
+      12,
+      1,
+      18038,
+      0
+    ],
+    [
+      0,
+      0,
+      2,
+      4,
+      0,
+      423
+    ]
+  ],
+  "comparison": [
+    {
+      "name": "XGBoost baseline",
+      "validation": {
+        "accuracy": 0.9993633276740238,
+        "macro_precision": 0.9492624137364447,
+        "macro_f1": 0.9655046118336085,
+        "weighted_f1": 0.9993849555745895
+      },
+      "selection_score": 0.9573835127850265,
+      "training_seconds": 359.0369298000005,
+      "weight_exponent": 0.5,
+      "test": {
+        "accuracy": 0.9993553940624851,
+        "macro_precision": 0.9557919574366839,
+        "macro_f1": 0.969428269981432,
+        "weighted_f1": 0.9993720664401446
+      },
+      "test_batch_ms_per_flow": 0.02241379298036423,
+      "single_flow_ms": 1.4009999867994338,
+      "selected": false
+    },
+    {
+      "name": "XGBoost refined",
+      "validation": {
+        "accuracy": 0.9993732446884471,
+        "macro_precision": 0.9524887298939791,
+        "macro_f1": 0.9657718823592326,
+        "weighted_f1": 0.9993901044664995
+      },
+      "selection_score": 0.9591303061266059,
+      "training_seconds": 839.7173514999449,
+      "weight_exponent": 0.25,
+      "test": {
+        "accuracy": 0.999385145105755,
+        "macro_precision": 0.9622822147498765,
+        "macro_f1": 0.9720839178141348,
+        "weighted_f1": 0.9993951075487657
+      },
+      "test_batch_ms_per_flow": 0.031164357456871846,
+      "single_flow_ms": 2.5450499961152673,
+      "selected": true
+    },
+    {
+      "name": "Random Forest",
+      "validation": {
+        "accuracy": 0.9988317757009346,
+        "macro_precision": 0.9194311946868249,
+        "macro_f1": 0.9444237102684317,
+        "weighted_f1": 0.9989364486638473
+      },
+      "selection_score": 0.9319274524776283,
+      "training_seconds": 179.39786710002227,
+      "weight_exponent": null,
+      "test": {
+        "accuracy": 0.9987464893768941,
+        "macro_precision": 0.9200954074709008,
+        "macro_f1": 0.9412799070942245,
+        "weighted_f1": 0.9988428875138292
+      },
+      "test_batch_ms_per_flow": 0.0047415300762290455,
+      "single_flow_ms": 38.769050006521866,
+      "selected": false
+    }
+  ],
+  "versions": {
+    "sklearn": "1.9.0",
+    "xgboost": "3.4.1",
+    "numpy": "2.5.2"
+  },
+  "sources": [
+    {
+      "name": "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "bytes": 77123859,
+      "sha256": "6ff1580f5f81c0ae28a26f7631721018577f5f7c5e0feac28b795fcfe7b411ee"
+    },
+    {
+      "name": "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "bytes": 76906168,
+      "sha256": "ca1824c51bfbb7b3c72290a11be04366ba8815878c6a1cc5c44cb1cee269e99b"
+    },
+    {
+      "name": "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "bytes": 58316725,
+      "sha256": "53a41c24d570ea83b7ac55b2e94df94e7a8216aeb80a2af0246b6bc8bb543000"
+    },
+    {
+      "name": "Monday-WorkingHours.pcap_ISCX.csv",
+      "bytes": 176927918,
+      "sha256": "852c4beb34eda186f32561fa79df7a0747e92e1a6535b01270820dd9ffe17f34"
+    },
+    {
+      "name": "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "bytes": 83102436,
+      "sha256": "6bcda3857c2504676034e3ea57762d38393cc734cb377a726bd5cb153961b1b5"
+    },
+    {
+      "name": "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+      "bytes": 52023263,
+      "sha256": "d67066211fb1689c78406f1506f4c44704ecb92088353d5c96d96d6474eb819d"
+    },
+    {
+      "name": "Tuesday-WorkingHours.pcap_ISCX.csv",
+      "bytes": 135078995,
+      "sha256": "52b8692ae8c7d2ed04671fe2b98335693c0a92c7ab157d8c8b534d6523080851"
+    },
+    {
+      "name": "Wednesday-workingHours.pcap_ISCX.csv",
+      "bytes": 225166395,
+      "sha256": "893c27dc968bf7a8adef1689f90be55ca4a4dc3088fb63d6ff247ac56856df2a"
+    }
+  ],
+  "artifact_sha256": {
+    "netguard_final_xgboost.joblib": "09c9e82f5e50379db8dc285ba0916f00d7607af294b05a6a446fa94acf38496c",
+    "netguard_final_preprocessor.joblib": "3dcb66386ac693cc2a41abcccbc3c46d5fd069a02d53375031c5fd468181e876",
+    "netguard_final_label_encoder.joblib": "7cbcce338bed7fd90ddbd5e54008e3ff8f3302b522fb661a5256fd50c7b2b977",
+    "netguard_schema.json": "f427a00a96451399ed6b8f42aa9d6e4861a435c7b3da8bd0a9f3cb771faccd59"
+  },
+  "manifest_sha256": "b8315252409022839ff4b15cb1681e138af471da5d8ceb972b8bda99e600bf93"
+}

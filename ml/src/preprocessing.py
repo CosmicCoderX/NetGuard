@@ -26,7 +26,7 @@ LABEL_COLUMN = " Label"
 def load_raw_data():
     """Load all CIC-IDS2017 CSV files into one DataFrame."""
 
-    csv_files = list(DATA_DIR.glob("*.csv"))
+    csv_files = sorted(DATA_DIR.glob("*.csv"))
 
     if not csv_files:
         raise FileNotFoundError(

@@ -1,306 +1,36 @@
-import {
-    Activity,
-    BrainCircuit,
-    ShieldAlert,
-    Target,
-} from "lucide-react"
-
-import TrafficDistribution from "../components/charts/TrafficDistribution"
-import ModelPerformance from "../components/charts/ModelPerformance"
-
-const stats = [
-    {
-        title: "Network Flows",
-        value: "2.52M",
-        description: "Production dataset flows",
-        icon: Activity,
-    },
-    {
-        title: "Threat Classes",
-        value: "6",
-        description: "Production classifications",
-        icon: ShieldAlert,
-    },
-    {
-        title: "Model Accuracy",
-        value: "99.91%",
-        description: "Final XGBoost test accuracy",
-        icon: Target,
-    },
-    {
-        title: "Production Model",
-        value: "XGBoost",
-        description: "Selected final model",
-        icon: BrainCircuit,
-    },
-]
-
-function Overview() {
-    return (
-        <div className="space-y-8">
-
-            {/* Header */}
-            <div>
-                <p className="text-sm text-slate-500">
-                    Overview
-                </p>
-
-                <h1 className="mt-1 text-2xl font-semibold text-white">
-                    Network security intelligence
-                </h1>
-
-                <p className="mt-2 max-w-2xl text-sm text-slate-400">
-                    Monitor network traffic classifications and explore
-                    NetGuard's machine learning performance.
-                </p>
-            </div>
-
-
-            {/* KPI Cards */}
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-
-                {stats.map((stat) => {
-                    const Icon = stat.icon
-
-                    return (
-                        <div
-                            key={stat.title}
-                            className="rounded-xl border border-slate-800 bg-slate-900 p-5 transition-colors hover:border-slate-700"
-                        >
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-800">
-                                <Icon className="h-4 w-4 text-sky-400" />
-                            </div>
-
-                            <p className="mt-5 text-sm text-slate-500">
-                                {stat.title}
-                            </p>
-
-                            <p className="mt-1 text-2xl font-semibold text-white">
-                                {stat.value}
-                            </p>
-
-                            <p className="mt-1 text-xs text-slate-500">
-                                {stat.description}
-                            </p>
-                        </div>
-                    )
-                })}
-
-            </div>
-
-
-            {/* Analytics */}
-            <div className="grid gap-6 lg:grid-cols-2">
-
-                {/* Traffic Distribution */}
-                <TrafficDistribution />
-
-
-                {/* Model Performance */}
-                <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 shadow-sm">
-
-                    <div className="mb-5">
-                        <h2 className="text-lg font-semibold text-slate-100">
-                            Model Performance
-                        </h2>
-
-                        <p className="mt-1 text-sm text-slate-400">
-                            Comparison of NetGuard's evaluated machine learning models.
-                        </p>
-                    </div>
-
-                    <ModelPerformance />
-
-                </div>
-
-            </div>
-
-
-            {/* Recent Predictions */}
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-
-                <div className="flex items-start justify-between">
-
-                    <div>
-                        <h2 className="text-lg font-semibold text-slate-100">
-                            Recent Predictions
-                        </h2>
-
-                        <p className="mt-1 text-sm text-slate-400">
-                            Latest traffic analyzed by the NetGuard API.
-                        </p>
-                    </div>
-
-                    <span className="rounded-full border border-slate-800 bg-slate-950 px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-slate-500">
-                        Latest
-                    </span>
-
-                </div>
-
-
-                <div className="mt-5 overflow-hidden rounded-xl border border-slate-800">
-
-                    {/* Table Header */}
-                    <div className="hidden grid-cols-12 border-b border-slate-800 bg-slate-950 px-4 py-3 text-[10px] uppercase tracking-wider text-slate-600 sm:grid">
-
-                        <div className="col-span-5">
-                            Prediction
-                        </div>
-
-                        <div className="col-span-3">
-                            Confidence
-                        </div>
-
-                        <div className="col-span-2">
-                            Risk
-                        </div>
-
-                        <div className="col-span-2 text-right">
-                            Source
-                        </div>
-
-                    </div>
-
-
-                    {/* Normal Prediction */}
-                    <div className="grid grid-cols-1 gap-3 border-b border-slate-800 bg-slate-950/60 px-4 py-4 sm:grid-cols-12 sm:items-center">
-
-                        <div className="sm:col-span-5">
-
-                            <div className="flex items-center gap-3">
-
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10">
-                                    <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                                </div>
-
-                                <div>
-                                    <p className="text-sm font-medium text-white">
-                                        Normal
-                                    </p>
-
-                                    <p className="text-xs text-slate-500">
-                                        BENIGN network flow
-                                    </p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div className="sm:col-span-3">
-
-                            <p className="text-[10px] uppercase tracking-wide text-slate-600 sm:hidden">
-                                Confidence
-                            </p>
-
-                            <p className="mt-1 text-sm font-semibold text-emerald-400 sm:mt-0">
-                                99.9999%
-                            </p>
-
-                        </div>
-
-
-                        <div className="sm:col-span-2">
-
-                            <p className="text-[10px] uppercase tracking-wide text-slate-600 sm:hidden">
-                                Risk
-                            </p>
-
-                            <p className="mt-1 text-sm text-slate-300 sm:mt-0">
-                                Low
-                            </p>
-
-                        </div>
-
-
-                        <div className="sm:col-span-2 sm:text-right">
-
-                            <p className="text-[10px] uppercase tracking-wide text-slate-600 sm:hidden">
-                                Source
-                            </p>
-
-                            <p className="mt-1 text-xs text-slate-500 sm:mt-0">
-                                CIC-IDS2017
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    {/* DoS / DDoS Prediction */}
-                    <div className="grid grid-cols-1 gap-3 bg-slate-950/60 px-4 py-4 sm:grid-cols-12 sm:items-center">
-
-                        <div className="sm:col-span-5">
-
-                            <div className="flex items-center gap-3">
-
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500/10">
-                                    <div className="h-2.5 w-2.5 rounded-full bg-orange-400" />
-                                </div>
-
-                                <div>
-                                    <p className="text-sm font-medium text-white">
-                                        DoS / DDoS
-                                    </p>
-
-                                    <p className="text-xs text-slate-500">
-                                        DDoS network flow
-                                    </p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div className="sm:col-span-3">
-
-                            <p className="text-[10px] uppercase tracking-wide text-slate-600 sm:hidden">
-                                Confidence
-                            </p>
-
-                            <p className="mt-1 text-sm font-semibold text-orange-400 sm:mt-0">
-                                99.9999%
-                            </p>
-
-                        </div>
-
-
-                        <div className="sm:col-span-2">
-
-                            <p className="text-[10px] uppercase tracking-wide text-slate-600 sm:hidden">
-                                Risk
-                            </p>
-
-                            <p className="mt-1 text-sm text-slate-300 sm:mt-0">
-                                High
-                            </p>
-
-                        </div>
-
-
-                        <div className="sm:col-span-2 sm:text-right">
-
-                            <p className="text-[10px] uppercase tracking-wide text-slate-600 sm:hidden">
-                                Source
-                            </p>
-
-                            <p className="mt-1 text-xs text-slate-500 sm:mt-0">
-                                CIC-IDS2017
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+import { Link } from 'react-router-dom'
+import { ArrowRight, Cpu, Database, Layers, Target } from 'lucide-react'
+import { useMemo } from 'react'
+import { percent, useMetadata } from '../lib/api'
+import { readHistory } from '../lib/history'
+import { AnalyzeLink, DataState, EmptyState, PageHeader, RiskBadge } from '../components/ui'
+import WhyNetGuard from '../components/WhyNetGuard'
+import WhyCard from '../components/WhyCard'
+import ModelPerformance from '../components/charts/ModelPerformance'
+import TrafficDistribution from '../components/charts/TrafficDistribution'
+
+export default function Overview() {
+    const { data, error } = useMetadata()
+    const entries = useMemo(() => readHistory().slice(0, 4), [])
+    const report = data?.evaluation
+    const stats = [
+        { label: 'Test accuracy', value: report ? percent(report.accuracy) : '—', caption: 'On held-out test flows', icon: Target },
+        { label: 'Macro precision', value: report ? percent(report.macro_precision ?? report.classification_report['macro avg'].precision) : '—', caption: 'Equal weight for every class', icon: Layers },
+        { label: 'Dataset flows', value: report ? new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 }).format(report.dataset_rows) : '—', caption: `${data?.classes.length ?? '6'} traffic categories`, icon: Database },
+        { label: 'Active model', value: data?.model.replace('XGBoost ', 'XGB ') ?? '—', caption: 'Selected on validation data', icon: Cpu },
+    ]
+    return <div className="page">
+        <PageHeader eyebrow="Your workspace" title="Security at a glance" description="A clear view of your model and recent analyses." action={<AnalyzeLink />} />
+        <WhyNetGuard />
+        {error && <DataState error={error} />}
+        <section className="metrics-grid" aria-label="Key model metrics">{stats.map(({ label, value, caption, icon: Icon }) => <article className="panel metric" key={label}><div className="metric-top"><span>{label}</span><Icon className="metric-icon" size={16} /></div><p className={`metric-value ${label === 'Active model' ? 'metric-value-small' : ''}`}>{value}</p><p className="metric-caption">{caption}</p></article>)}</section>
+        <div className="section-grid">
+            <section className="panel panel-body"><div className="panel-heading"><div><h2>Model comparison</h2><p>Accuracy, precision & balanced performance</p></div><Link className="text-link" to="/model-lab">Model lab<ArrowRight size={13} /></Link></div><ModelPerformance /></section>
+            <section className="panel panel-body"><div className="panel-heading"><div><h2>Traffic in the dataset</h2><p>Recorded flows by category</p></div><span className="badge">6 classes</span></div><TrafficDistribution /></section>
         </div>
-    )
+        <section className="panel"><div className="panel-body" style={{ paddingBottom: entries.length ? 10 : 0 }}><div className="panel-heading" style={{ marginBottom: 10 }}><div><h2>Recent analyses</h2><p>Saved in this browser</p></div><Link className="text-link" to="/history">View all<ArrowRight size={13} /></Link></div></div>{entries.length ? <div className="table-wrap"><table className="data-table"><thead><tr><th>Prediction</th><th>Confidence</th><th>Risk</th><th>Analyzed</th></tr></thead><tbody>{entries.map(entry => <tr key={entry.id}><td>{entry.prediction}</td><td>{percent(entry.confidence)}</td><td><RiskBadge risk={entry.risk_level} /></td><td className="cell-muted">{new Date(entry.timestamp).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}</td></tr>)}</tbody></table></div> : <EmptyState title="Your first analysis starts here" text="Load a sample flow to explore the model." action={<Link className="text-link" to="/analyze">Analyze a flow<ArrowRight size={13} /></Link>} />}
+            <div className="panel-footer"><WhyCard title="Why keep recent results?">Revisit outcomes and decide what needs follow-up. This browser keeps up to 500 analyses; it is not a shared audit log.</WhyCard></div>
+        </section>
+        <p className="small muted">Research tool · Supplied flow data only · Predictions need human review.</p>
+    </div>
 }
-
-export default Overview

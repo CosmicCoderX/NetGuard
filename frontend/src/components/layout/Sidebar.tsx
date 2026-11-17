@@ -1,119 +1,44 @@
-import {
-    BarChart3,
-    Database,
-    History,
-    LayoutDashboard,
-    ScanSearch,
-    Settings,
-    Shield,
-} from "lucide-react"
-
-import { NavLink } from "react-router-dom"
-
+import { BarChart3, Database, History, LayoutDashboard, ScanSearch, Settings, Shield, X } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 
 const navigation = [
-    {
-        name: "Overview",
-        path: "/overview",
-        icon: LayoutDashboard,
-    },
-    {
-        name: "Analyze Traffic",
-        path: "/analyze",
-        icon: ScanSearch,
-    },
-    {
-        name: "Model Lab",
-        path: "/model-lab",
-        icon: BarChart3,
-    },
-    {
-        name: "Dataset",
-        path: "/dataset",
-        icon: Database,
-    },
-    {
-        name: "History",
-        path: "/history",
-        icon: History,
-    },
-    {
-        name: "Settings",
-        path: "/settings",
-        icon: Settings,
-    },
+    { name: 'Overview', path: '/overview', icon: LayoutDashboard },
+    { name: 'Analyze traffic', path: '/analyze', icon: ScanSearch },
+    { name: 'Model lab', path: '/model-lab', icon: BarChart3 },
+    { name: 'Dataset', path: '/dataset', icon: Database },
+    { name: 'History', path: '/history', icon: History },
+    { name: 'Settings', path: '/settings', icon: Settings },
 ]
 
-
-function Sidebar() {
-    return (
-        <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-slate-800 bg-slate-950">
-
-            {/* Logo */}
-            <div className="flex h-20 items-center gap-3 border-b border-slate-800 px-6">
-
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800">
-                    <Shield className="h-5 w-5 text-sky-400" />
-                </div>
-
-                <div>
-                    <h1 className="text-lg font-semibold text-white">
-                        NetGuard
-                    </h1>
-
-                    <p className="text-xs text-slate-500">
-                        ML Security Platform
-                    </p>
-                </div>
-
-            </div>
-
-
-            {/* Navigation */}
-            <nav className="flex-1 space-y-1 px-3 py-5">
-
-                {navigation.map((item) => {
-
-                    const Icon = item.icon
-
-                    return (
-                        <NavLink
-                            key={item.name}
-                            to={item.path}
-                            className={({ isActive }) =>
-                                `flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${isActive
-                                    ? "bg-slate-800 text-white"
-                                    : "text-slate-400 hover:bg-slate-900 hover:text-white"
-                                }`
-                            }
-                        >
-                            <Icon className="h-4 w-4" />
-
-                            {item.name}
-                        </NavLink>
-                    )
-
-                })}
-
-            </nav>
-
-
-            {/* Footer */}
-            <div className="border-t border-slate-800 p-4">
-
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-
-                    <span className="h-2 w-2 rounded-full bg-emerald-400" />
-
-                    System operational
-
-                </div>
-
-            </div>
-
+export default function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+    const sidebar = useRef<HTMLElement>(null)
+    useEffect(() => {
+        if (!open) return
+        const previousOverflow = document.body.style.overflow
+        document.body.style.overflow = 'hidden'
+        sidebar.current?.querySelector<HTMLButtonElement>('button')?.focus()
+        function keyboard(event: KeyboardEvent) {
+            if (event.key === 'Escape') { event.preventDefault(); onClose() }
+            if (event.key !== 'Tab') return
+            const items = Array.from(sidebar.current?.querySelectorAll<HTMLElement>('a, button') ?? []).filter(item => item.offsetParent !== null)
+            const first = items[0], last = items[items.length - 1]
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
+        }
+        function resize() { if (window.matchMedia('(min-width: 1024px)').matches) onClose() }
+        document.addEventListener('keydown', keyboard)
+        window.addEventListener('resize', resize)
+        return () => { document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', keyboard); window.removeEventListener('resize', resize) }
+    }, [open, onClose])
+    return <>
+        {open && <button className="sidebar-overlay is-open" aria-label="Close navigation overlay" tabIndex={-1} onClick={onClose} />}
+        <aside ref={sidebar} id="primary-navigation" className={`sidebar ${open ? 'is-open' : ''}`} aria-label="Primary navigation">
+            <NavLink className="brand" to="/overview" onClick={onClose}><span className="brand-icon"><Shield size={20} /></span><div><p className="brand-name">NetGuard</p><p className="brand-subtitle">Network intelligence</p></div></NavLink>
+            <button className="icon-button sidebar-close" aria-label="Close navigation" onClick={onClose}><X size={17} /></button>
+            <p className="nav-label">Workspace</p>
+            <nav aria-label="Workspace">{navigation.slice(0, 5).map(({ name, path, icon: Icon }) => <NavLink key={path} to={path} onClick={onClose} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}><Icon aria-hidden="true" />{name}</NavLink>)}</nav>
+            <div className="nav-bottom"><NavLink to="/settings" onClick={onClose} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}><Settings aria-hidden="true" />Settings</NavLink><div className="workspace-note">CIC-IDS2017 dataset<br />Local analysis workspace</div></div>
         </aside>
-    )
+    </>
 }
-
-
-export default Sidebar

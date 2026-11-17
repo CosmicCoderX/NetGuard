@@ -43,6 +43,18 @@
 
 ## 🌐 Overview
 
+**Latest verification:** See [the project review](PROJECT_REVIEW.md) for measured
+results, repaired issues, implemented pages, test commands, and remaining limits.
+The reconstructed local test split reproduces 99.91% accuracy; this is not a
+guarantee of correctness on new traffic. The enhanced dashboard has now passed browser smoke checks; see the model update below for the current benchmark.
+
+**Model and dashboard update:** [Model improvements](MODEL_IMPROVEMENTS.md) documents
+the new validation protocol, model comparison, visual purpose cards, measured results,
+and commands for activating or rolling back the new bundle.
+
+**Dashboard polish:** [UI refinement](UI_REFINEMENT.md) covers the simpler layout,
+mobile navigation, shared styles, performance changes, and browser verification.
+
 **NetGuard** is an end-to-end intelligent intrusion detection system (NIDS) designed to protect modern computer networks against malicious intrusions, reconnaissance probes, volumetric attacks, and automated exploit tooling.
 
 Trained on over **2.52 Million network flows** from the Canadian Institute for Cybersecurity (**CIC-IDS2017**) benchmark, NetGuard analyzes network flow telemetry across **78 distinct traffic features** (such as inter-arrival times, packet distributions, header flags, flow durations, and window sizes) to deliver millisecond-level threat classifications, confidence scoring, and risk categorization.
@@ -78,7 +90,7 @@ Trained on over **2.52 Million network flows** from the Canadian Institute for C
 
 - **⚡ Millisecond Threat Inference**: Highly optimized XGBoost inference pipeline capable of real-time classification.
 - **🎯 6-Class Deep Threat Taxonomy**: Categorizes traffic into Normal or 5 prominent cyberattack archetypes.
-- **🔍 Explainable AI (XAI)**: Returns top 10 contributing feature importances for every prediction to assist security analysts in root-cause investigation.
+- **🔍 Model Feature Importances**: Returns the top 10 global feature importances. These describe the overall model, not the cause of an individual prediction.
 - **🧪 Interactive Attack Simulator**: Pre-loaded with realistic sample traffic flows (Normal, DoS/DDoS, Port Scanning, Brute Force, Web Attacks, Botnets) to test detection without live exploits.
 - **🛡️ Risk Categorization**: Dynamically assigns risk posture (`Low`, `High`, `Critical`) along with granular class-by-class probability distribution.
 - **✨ High-Performance Modern UI**: Cyberpunk-inspired dark UI built with React 19, Tailwind CSS v4, Lucide icons, and Recharts.
@@ -102,7 +114,9 @@ NetGuard groups real-world network intrusions from the CIC-IDS2017 dataset into 
 
 ## 🧠 Machine Learning Performance
 
-The models were evaluated against an independent stratified test partition of the CIC-IDS2017 dataset:
+The saved XGBoost model was re-evaluated on a reconstructed stratified test partition
+of the CIC-IDS2017 dataset. Exact independence cannot be proven without the original
+training row manifest. Historical comparison figures below are not external validation:
 
 | Model Architecture | Accuracy | Macro F1-Score | Inference Latency | Production Status |
 | :--- | :---: | :---: | :---: | :---: |
