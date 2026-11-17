@@ -43,7 +43,11 @@ export type Metadata = {
     importance_scope: string
 }
 export function apiBase() {
-    return localStorage.getItem("netguard.api") || "http://127.0.0.1:8000"
+    return localStorage.getItem("netguard.api")
+        || import.meta.env?.VITE_API_BASE_URL
+        || (import.meta.env?.PROD
+            ? "https://netguard-6vsn.onrender.com"
+            : "http://127.0.0.1:8000")
 }
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     const timeout = AbortSignal.timeout(30000)

@@ -130,13 +130,24 @@ class ApiTests(unittest.TestCase):
 
     def test_cors(self):
         for origin in ("http://localhost:5173", "http://127.0.0.1:5173",
-                       "http://localhost:5174", "http://127.0.0.1:5174"):
+                       "http://localhost:5174", "http://127.0.0.1:5174",
+                       "https://netguard-1-ai4q.onrender.com"):
             with self.subTest(origin=origin):
                 status, _, headers = self.request("/health", headers={"Origin": origin})
                 self.assertEqual(status, 200)
                 self.assertEqual(headers.get("Access-Control-Allow-Origin"), origin)
         _, _, headers = self.request("/health", headers={"Origin": "https://untrusted.example"})
         self.assertIsNone(headers.get("Access-Control-Allow-Origin"))
+        origin = "https://netguard-1-ai4q.onrender.com"
+        request = Request(self.base + "/predict", method="OPTIONS", headers={
+            "Origin": origin,
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type",
+        })
+        with urlopen(request, timeout=10) as response:
+            self.assertEqual(response.status, 200)
+            self.assertEqual(response.headers.get("Access-Control-Allow-Origin"), origin)
+            self.assertIn("POST", response.headers.get("Access-Control-Allow-Methods"))
 
     def test_frontend_feature_names_match_artifacts(self):
         source = (ROOT / "frontend/src/data/features.ts").read_text(encoding="utf-8")
